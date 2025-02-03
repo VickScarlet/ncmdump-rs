@@ -2,6 +2,11 @@
 
 dump ncm file
 
+## Install dependencies
+```shell
+$ scoop install openssl
+```
+
 ## Usage
 
 ```shell

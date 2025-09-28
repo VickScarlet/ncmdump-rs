@@ -98,18 +98,17 @@ fn convert_key_data(key_data: &Vec<u8>) -> Vec<u8> {
     let key_data = &key_data[17..];
     let key_length = key_data.len();
     let mut key_box: Vec<u8> = (0..255).collect();
+
     key_box.push(255);
     let mut last_byte = 0u8;
     let mut key_offset = 0;
     for i in 0..256 {
-        let swap = key_box[i];
-        let c = (swap as u16 + last_byte as u16 + key_data[key_offset] as u16) as u8 & 0xff;
+        let c = (key_box[i] as u16 + last_byte as u16 + key_data[key_offset] as u16) as u8 & 0xff;
+        key_box.swap(i, c as usize);
         key_offset += 1;
         if key_offset >= key_length {
             key_offset = 0;
         }
-        key_box[i] = key_box[c as usize];
-        key_box[c as usize] = swap;
         last_byte = c;
     }
     key_box
